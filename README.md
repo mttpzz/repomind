@@ -19,32 +19,6 @@
 
 ---
 
-## 📁 Project Architecture
-
-repomind/
-├── .env.example                # Environment variables template
-├── Dockerfile                  # Containerization configuration
-├── requirements.txt            # Python dependencies
-├── LICENSE                     # MIT License
-├── README.md                   # Project documentation
-├── src/
-│   ├── __init__.py
-│   ├── config.py               # Centralized configuration & Langfuse setup
-│   ├── core/
-│   │   ├── __init__.py
-│   │   └── llm_factory.py      # Factory Pattern for Anthropic & Ollama via LiteLLM
-│   ├── rag/
-│   │   ├── __init__.py
-│   │   └── pipeline.py         # LlamaIndex + ChromaDB + BGE Reranker
-│   ├── agents/
-│   │   ├── __init__.py
-│   │   └── crew_manager.py     # CrewAI Multi-Agent Orchestration
-│   └── main.py                 # CLI Entry Point
-└── tests/
-    └── test_rag.py             # Pytest unit tests for pipeline initialization
-
----
-
 ## 🛠️ Getting Started & Installation
 
 Follow these steps to set up and run **RepoMind** locally.
