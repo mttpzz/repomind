@@ -20,5 +20,7 @@ class LLMFactory:
     @staticmethod
     def get_embedding(text: str):
         # Generate embeddings locally using nomic-embed-text via Ollama/LiteLLM
-        response = embedding(model=SETTINGS["embedding_model"], input=[text])
+        # LiteLLM needs the "ollama/" provider prefix even when SETTINGS stores a bare model name
+        model = f"ollama/{SETTINGS["embedding_model"]}"
+        response = embedding(model=model, input=[text])
         return response["data"][0]["embedding"]
