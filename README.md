@@ -94,10 +94,31 @@ RepoMind integrates **LiteLLM** and **Langfuse** natively. Every query, vector r
 
 ## 🐳 Docker Deployment
 
-To build and run the application inside a Docker container:
+Build the image:
 
 docker build -t repomind:latest .
-docker run --env-file .env -v $(pwd)/data:/app/data repomind:latest
+
+The container's entrypoint runs `python -m src.main`, so the `ingest`/`query` subcommand and flags are passed at `docker run` time. Ollama runs on your **host**, not inside the container, so point `OLLAMA_API_BASE` at the host (`host.docker.internal` on Docker Desktop for Windows/Mac). The target codebase you want to analyze also isn't part of the image — mount it as a volume.
+
+### Ingest
+
+docker run --rm --env-file .env \
+  -v "$(pwd)/data:/app/data" \
+  -v "/path/to/target/codebase:/target" \
+  -e OLLAMA_API_BASE=http://host.docker.internal:11434 \
+  repomind:latest ingest --dir /target
+
+### Query
+
+docker run --rm --env-file .env \
+  -v "$(pwd)/data:/app/data" \
+  -v "/path/to/target/codebase:/target" \
+  -e OLLAMA_API_BASE=http://host.docker.internal:11434 \
+  repomind:latest query --target-dir /target --prompt "How is authentication handled in this project?"
+
+- `-v $(pwd)/data:/app/data` persists the ChromaDB vector store (`./data/chroma_db`) across `ingest` and `query` runs — without it, each container starts with an empty index.
+- `-v /path/to/target/codebase:/target` mounts the codebase you want to ingest/query; `--dir`/`--target-dir` must point at the path *inside* the container (`/target`), not the host path.
+- `--env-file .env` supplies `ANTHROPIC_API_KEY` and the optional Langfuse keys — don't bake secrets into the image.
 
 ---
 
