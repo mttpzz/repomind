@@ -14,7 +14,6 @@
   - **LiteLLM** handles model routing and provides a unified interface.
   - **Langfuse** provides automatic end-to-end tracing and monitoring for every LLM call and agent workflow step.
 - **Flexible Model Support:** Powered by **Anthropic Claude Haiku (`anthropic/claude-haiku-4-5-20251001`)** for cloud tasks, alongside local open-weight models via **Ollama** (`gpt-oss:20b` and `nomic-embed-text` for embeddings).
-- **Software Design Patterns:** Implements the **Factory Pattern** (`LLMFactory`) for clean separation of concerns and maintainable code architecture.
 - **Containerization:** Fully dockerized for seamless deployment.
 
 ---
@@ -24,13 +23,13 @@
 Follow these steps to set up and run **RepoMind** locally.
 
 ### 1. Prerequisites
-- **Python 3.10+** installed on your machine.
+- **Python 3.12+** installed on your machine (pinned dependency versions are verified against 3.12).
 - **Ollama** installed locally to serve open-source models and embeddings.
 
 ### 2. Clone and Install Dependencies
 Clone the repository and install the required Python packages:
 
-git clone https://github.com/your-username/repomind.git
+git clone https://github.com/mttpzz/repomind.git
 cd repomind
 
 # Create and activate a virtual environment (recommended)
@@ -55,18 +54,19 @@ Make sure your Ollama background service is running:
 
 ollama serve
 
-In a separate terminal window, download the required local models (embedding and local LLM):
+In a separate terminal window, download the required local embedding model:
 
 ollama pull nomic-embed-text
-ollama pull gpt-oss:20b
 
 ---
 
 ## 🧪 Running Tests
 
-RepoMind includes unit tests to ensure architectural stability. Run the test suite using `pytest`:
+RepoMind includes unit tests covering the RAG pipeline setup (`tests/test_rag.py`), the CrewAI agent/LLM wiring (`tests/test_crew_manager.py`), and the CLI entry point (`tests/test_main.py`). All external calls (CrewAI, LiteLLM, Ollama embeddings) are mocked, so the suite runs offline — no Anthropic key, Langfuse account, or running Ollama instance required. Run it with `pytest`:
 
 pytest
+
+Note: these tests only verify that the code wires the right calls with the right parameters — they don't catch integration issues (wrong model name, incompatible library version, misconfigured API key). Always do a real end-to-end `ingest` + `query` run (see below) before trusting a change.
 
 ---
 

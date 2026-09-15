@@ -17,7 +17,7 @@ class AdvancedRAGPipeline:
         
         # 1. Configure global LlamaIndex settings with local Ollama embeddings
         Settings.embed_model = OllamaEmbedding(
-            model_name="nomic-embed-text",
+            model_name=SETTINGS["embedding_model"],
             base_url=os.getenv("OLLAMA_API_BASE", "http://localhost:11434")
         )
         # Disable default LlamaIndex LLM for chunking/summarization unless explicitly needed

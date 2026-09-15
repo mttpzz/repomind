@@ -1,6 +1,19 @@
 import pytest
 from pathlib import Path
 from src.rag.pipeline import AdvancedRAGPipeline
+from src.config import SETTINGS
+
+def test_pipeline_uses_configured_embedding_model(tmp_path):
+    """Ingest and query must share the same EMBEDDING_MODEL from SETTINGS instead of a
+    hardcoded value, otherwise changing the .env setting silently only affects one of them."""
+    test_dir = tmp_path / "test_codebase"
+    test_dir.mkdir()
+
+    from llama_index.core import Settings
+
+    AdvancedRAGPipeline(target_dir=str(test_dir))
+
+    assert Settings.embed_model.model_name == SETTINGS["embedding_model"]
 
 def test_pipeline_initialization(tmp_path):
     """Test that the AdvancedRAGPipeline initializes correctly with a target directory."""
