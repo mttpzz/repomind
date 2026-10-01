@@ -1,6 +1,6 @@
 # RepoMind 🧠🤖
 
-**RepoMind** is an enterprise-grade, advanced Multi-Agent RAG (Retrieval-Augmented Generation) assistant designed to ingest, analyze, and query complex codebases. Built with state-of-the-art Generative AI frameworks, it combines high-performance vector search, cross-encoder reranking, autonomous multi-agent collaboration, and robust MLOps observability.
+**RepoMind** is an advanced Multi-Agent RAG (Retrieval-Augmented Generation) assistant designed to ingest, analyze, and query complex codebases. Built with state-of-the-art Generative AI frameworks, it combines high-performance vector search, cross-encoder reranking, autonomous multi-agent collaboration, and robust MLOps observability.
 
 ---
 
